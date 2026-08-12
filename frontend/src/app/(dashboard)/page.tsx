@@ -38,7 +38,8 @@ export default function DashboardOverviewPage() {
 
   useEffect(() => {
     // Attempt to fetch from real API, fallback to mock data on failure
-    fetch("http://localhost:8000/api/v1/analytics/overview", {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    fetch(`${API_URL}/api/v1/analytics/overview`, {
       headers: {
         "Authorization": `Bearer ${localStorage.getItem("token")}`
       }

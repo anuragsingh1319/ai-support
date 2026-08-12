@@ -84,7 +84,8 @@ export default function ConversationsPage() {
 
   // Fetch conversations list
   useEffect(() => {
-    fetch("http://localhost:8000/api/v1/conversations/", {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    fetch(`${API_URL}/api/v1/conversations/`, {
       headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
     })
       .then(res => {
@@ -111,7 +112,8 @@ export default function ConversationsPage() {
   useEffect(() => {
     if (!selected) return;
     
-    fetch(`http://localhost:8000/api/v1/conversations/${selected.session_id}/messages`, {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    fetch(`${API_URL}/api/v1/conversations/${selected.session_id}/messages`, {
       headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
     })
       .then(res => {

@@ -31,7 +31,8 @@ export default function ToolsPage() {
   const [newTool, setNewTool] = useState({ name: "", description: "", api_endpoint: "", auth_header_name: "", auth_header_value: "" });
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/v1/tools/", {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    fetch(`${API_URL}/api/v1/tools/`, {
       headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
     })
       .then(res => res.ok ? res.json() : [])
@@ -42,7 +43,8 @@ export default function ToolsPage() {
   const handleAddTool = () => {
     if (!newTool.name || !newTool.api_endpoint) return;
     
-    fetch("http://localhost:8000/api/v1/tools/", {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    fetch(`${API_URL}/api/v1/tools/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
