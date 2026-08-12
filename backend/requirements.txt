@@ -13,5 +13,5 @@ bcrypt==4.1.2
 PyPDF2==3.0.1
 langchain-text-splitters==0.0.1
 langchain-community==0.0.24
-faiss-cpu==1.7.4
+faiss-cpu
 python-multipart==0.0.9
