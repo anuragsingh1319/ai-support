@@ -5,7 +5,8 @@ from app.core.config import settings
 engine = create_async_engine(
     settings.SQLALCHEMY_DATABASE_URI,
     echo=False,
-    future=True
+    future=True,
+    connect_args={"check_same_thread": False}
 )
 
 async_session_maker = sessionmaker(

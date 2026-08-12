@@ -1,20 +1,11 @@
 import asyncio
-from app.core.celery_app import celery_app
 from app.db.session import async_session_maker
 from app.models.document import Document, DocumentChunk, DocumentStatus
 from app.services.document_parser import extract_text, chunk_text
-from app.services.embeddings import generate_embeddings
+from app.services.embeddings import add_texts_to_vector_store
 from sqlalchemy.future import select
 
-# Celery is synchronous by default, so we wrap async DB/OpenAI calls
-def process_document_sync(document_id: str):
-    asyncio.run(process_document_async(document_id))
-
-@celery_app.task(name="app.worker.process_document_task")
-def process_document_task(document_id: str):
-    process_document_sync(document_id)
-
-async def process_document_async(document_id: str):
+async def process_document_background(document_id: str):
     async with async_session_maker() as db:
         try:
             # 1. Fetch document
@@ -36,18 +27,21 @@ async def process_document_async(document_id: str):
                 await db.commit()
                 return
 
-            # 3. Generate embeddings
-            embeddings = await generate_embeddings(chunks)
-
-            # 4. Store in database
-            for text_chunk, embedding in zip(chunks, embeddings):
+            # 3. Save chunks in DB and FAISS
+            metadatas = []
+            for text_chunk in chunks:
                 doc_chunk = DocumentChunk(
                     document_id=doc.id,
                     organization_id=doc.organization_id,
-                    content=text_chunk,
-                    embedding=embedding
+                    content=text_chunk
                 )
                 db.add(doc_chunk)
+                metadatas.append({"organization_id": str(doc.organization_id)})
+            
+            # Flush to get chunk IDs if needed, but not strictly required for FAISS.
+            
+            # Save vectors to FAISS local store
+            add_texts_to_vector_store(chunks, metadatas=metadatas)
 
             doc.status = DocumentStatus.COMPLETED
             await db.commit()

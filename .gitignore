@@ -1,0 +1,18 @@
+# Python
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/ai_support.db
+backend/.env
+
+# Node
+frontend/node_modules/
+frontend/.next/
+frontend/.env.local
+frontend/.env
+
+# Mac
+.DS_Store
+
+# Data
+backend/faiss_index/

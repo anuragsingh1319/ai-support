@@ -1,6 +1,5 @@
 import uuid
-from sqlalchemy import Column, String, DateTime, Enum, ForeignKey, JSON
-from sqlalchemy.dialects import postgresql
+from sqlalchemy import Column, String, DateTime, Enum, ForeignKey, JSON, Uuid
 from sqlalchemy.orm import relationship
 from .base import TimestampMixin, Base
 import enum
@@ -20,14 +19,14 @@ class SenderType(enum.Enum):
 
 class Conversation(TimestampMixin, Base):
     __tablename__ = "conversations"
-    id = Column(postgresql.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
     organization_id = Column(
-        postgresql.UUID(as_uuid=True),
+        Uuid(as_uuid=True),
         ForeignKey("organizations.id", ondelete="CASCADE"),
         nullable=False,
     )
     agent_id = Column(
-        postgresql.UUID(as_uuid=True),
+        Uuid(as_uuid=True),
         ForeignKey("agents.id", ondelete="CASCADE"),
         nullable=False,
     )
@@ -40,14 +39,14 @@ class Conversation(TimestampMixin, Base):
 
 class Message(TimestampMixin, Base):
     __tablename__ = "messages"
-    id = Column(postgresql.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
     conversation_id = Column(
-        postgresql.UUID(as_uuid=True),
+        Uuid(as_uuid=True),
         ForeignKey("conversations.id", ondelete="CASCADE"),
         nullable=False,
     )
     sender = Column(Enum(SenderType), nullable=False)
     content = Column(String, nullable=False)
-    metadata = Column(JSON, nullable=True)  # stores token counts, latency_ms, etc.
+    message_metadata = Column("metadata", JSON, nullable=True)  # stores token counts, latency_ms, etc.
 
     conversation = relationship("Conversation", back_populates="messages")

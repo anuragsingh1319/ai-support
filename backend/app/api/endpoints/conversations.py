@@ -163,7 +163,7 @@ async def human_reply(
         conversation_id=conversation.id,
         sender=SenderType.HUMAN,
         content=request.message,
-        metadata={"agent_user_id": str(current_user.id)},
+        message_metadata={"agent_user_id": str(current_user.id)},
     )
     db.add(msg)
     await db.commit()

@@ -4,20 +4,13 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "AI Customer Support Automation Platform"
     API_V1_STR: str = "/api/v1"
     
-    # Postgres configuration
-    POSTGRES_SERVER: str = "localhost"
-    POSTGRES_USER: str = "postgres"
-    POSTGRES_PASSWORD: str = "postgres"
-    POSTGRES_DB: str = "ai_support_platform"
-    POSTGRES_PORT: str = "5432"
-    
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:
-        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        return "sqlite+aiosqlite:///./ai_support.db"
     
     @property
     def SQLALCHEMY_SYNC_DATABASE_URI(self) -> str:
-        return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        return "sqlite:///./ai_support.db"
 
     # JWT Authentication
     SECRET_KEY: str = "supersecretkey_change_in_production"

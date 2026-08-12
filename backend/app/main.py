@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api.endpoints import documents, chat, conversations, analytics
+from app.api.endpoints import documents, chat, conversations, analytics, tools, voice
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -21,6 +21,8 @@ app.include_router(documents.router, prefix=f"{settings.API_V1_STR}/documents", 
 app.include_router(chat.router, prefix=f"{settings.API_V1_STR}/chat", tags=["chat"])
 app.include_router(conversations.router, prefix=f"{settings.API_V1_STR}/conversations", tags=["conversations"])
 app.include_router(analytics.router, prefix=f"{settings.API_V1_STR}/analytics", tags=["analytics"])
+app.include_router(tools.router, prefix=f"{settings.API_V1_STR}/tools", tags=["tools"])
+app.include_router(voice.router, prefix=f"{settings.API_V1_STR}/voice", tags=["voice"])
 
 @app.get("/health")
 async def health_check():

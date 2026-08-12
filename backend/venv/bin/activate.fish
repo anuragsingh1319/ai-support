@@ -29,7 +29,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/anuragsingh/.gemini/antigravity/scratch/ai-support-platform/backend/venv"
+set -gx VIRTUAL_ENV "/Users/anuragsingh/Desktop/ai-support-platform/backend/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

@@ -56,7 +56,7 @@ async def get_analytics_overview(
     thirty_days_ago = datetime.now(timezone.utc) - timedelta(days=30)
     daily_result = await db.execute(
         select(
-            func.date_trunc("day", Conversation.created_at).label("day"),
+            func.strftime("%Y-%m-%d", Conversation.created_at).label("day"),
             func.count(Conversation.id).label("count"),
         )
         .filter(
@@ -68,7 +68,7 @@ async def get_analytics_overview(
     )
     daily_rows = daily_result.all()
     daily_breakdown = [
-        {"date": row.day.strftime("%Y-%m-%d"), "conversations": row.count}
+        {"date": row.day, "conversations": row.count}
         for row in daily_rows
     ]
 
