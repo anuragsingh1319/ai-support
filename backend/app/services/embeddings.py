@@ -2,7 +2,9 @@ import os
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import OpenAIEmbeddings
 
-FAISS_INDEX_PATH = "faiss_index"
+import os
+DATA_DIR = os.environ.get("DATA_DIR", ".")
+FAISS_INDEX_PATH = os.path.join(DATA_DIR, "faiss_index")
 
 def get_vector_store():
     embeddings = OpenAIEmbeddings(model="text-embedding-3-small")

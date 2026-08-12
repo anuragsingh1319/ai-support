@@ -6,11 +6,15 @@ class Settings(BaseSettings):
     
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:
-        return "sqlite+aiosqlite:///./ai_support.db"
+        import os
+        data_dir = os.environ.get("DATA_DIR", ".")
+        return f"sqlite+aiosqlite:///{data_dir}/ai_support.db"
     
     @property
     def SQLALCHEMY_SYNC_DATABASE_URI(self) -> str:
-        return "sqlite:///./ai_support.db"
+        import os
+        data_dir = os.environ.get("DATA_DIR", ".")
+        return f"sqlite:///{data_dir}/ai_support.db"
 
     # JWT Authentication
     SECRET_KEY: str = "supersecretkey_change_in_production"
